@@ -1,0 +1,10 @@
+src/
+.eslintrc.js
+.prettierrc.js
+tsconfig.json
+.vscode/
+.git/
+.github/
+.husky/
+node_modules/
+*.log
