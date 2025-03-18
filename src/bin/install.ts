@@ -15,6 +15,21 @@ if (!['vue', 'nuxt', 'wxt'].includes(projectType)) {
 // 获取用户项目根目录
 const userProjectRoot = process.cwd();
 
+// 固定依赖版本
+const dependencyVersions = {
+  'eslint': '^8.56.0',
+  'prettier': '^3.2.0',
+  '@typescript-eslint/eslint-plugin': '^6.21.0',
+  '@typescript-eslint/parser': '^6.21.0',
+  'eslint-config-prettier': '^9.1.0',
+  'eslint-plugin-prettier': '^5.1.2',
+  'eslint-plugin-vue': '^9.20.0',
+  'vue-tsc': '^1.8.27',
+  'typescript': '~5.3.3',
+  'husky': '^8.0.0',
+  'lint-staged': '^15.2.0'
+};
+
 // 配置文件路径
 const configFiles: ConfigFile[] = [
   {
@@ -75,7 +90,7 @@ packageJson.scripts.lint = 'eslint --ext .js,.ts,.vue --ignore-path .gitignore .
 packageJson.scripts['lint:fix'] = 'eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix';
 packageJson.scripts.format = 'prettier --write .';
 packageJson.scripts['type-check'] = 'vue-tsc --noEmit';
-packageJson.scripts.prepare = 'husky install'; // 添加 prepare 脚本以自动安装 husky
+packageJson.scripts.prepare = 'husky install';
 
 // 更新 package.json 中的 lint-staged 配置
 packageJson['lint-staged'] = {
@@ -93,6 +108,12 @@ if (packageJson.type === 'module') {
   delete packageJson.type;
 }
 
+// 更新依赖版本
+packageJson.devDependencies = {
+  ...packageJson.devDependencies,
+  ...dependencyVersions
+};
+
 // 写入更新后的 package.json
 fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 console.log('Updated package.json');
@@ -102,7 +123,7 @@ const tsconfigPath = path.resolve(userProjectRoot, 'tsconfig.json');
 if (!fs.existsSync(tsconfigPath)) {
   const tsconfig = {
     compilerOptions: {
-      target: "ES2018",
+      target: "ES2022",
       module: "ESNext",
       moduleResolution: "Node",
       strict: true,
@@ -123,7 +144,7 @@ if (!fs.existsSync(tsconfigPath)) {
       noUnusedParameters: true,
       noImplicitReturns: true,
       noFallthroughCasesInSwitch: true,
-      types: [] as string[]  // 指定为字符串数组类型
+      types: [] as string[]
     },
     include: ["src/**/*", "tests/**/*"],
     exclude: ["node_modules", "dist"]
@@ -141,19 +162,7 @@ if (!fs.existsSync(tsconfigPath)) {
 // 安装所需依赖
 console.log(`Installing dependencies for ${projectType} project...`);
 try {
-  const dependencies = [
-    'eslint',
-    'prettier',
-    '@typescript-eslint/eslint-plugin',
-    '@typescript-eslint/parser',
-    'eslint-config-prettier',
-    'eslint-plugin-prettier',
-    'eslint-plugin-vue',
-    'vue-tsc',
-    'typescript',
-    'husky',
-    'lint-staged'
-  ];
+  const dependencies = Object.keys(dependencyVersions);
 
   // 根据项目类型添加特定依赖
   if (projectType === 'nuxt') {
@@ -164,10 +173,13 @@ try {
     dependencies.push('web-ext-types');
   }
 
-  execSync(`npm install --save-dev ${dependencies.join(' ')}`, { stdio: 'inherit' });
+  // 使用 --legacy-peer-deps 安装依赖
+  execSync(`npm install --save-dev --legacy-peer-deps ${dependencies.join(' ')}`, { stdio: 'inherit' });
   console.log('Dependencies installed successfully');
 } catch (error) {
   console.error('Failed to install dependencies:', error instanceof Error ? error.message : String(error));
+  console.log('Try running: npm install --legacy-peer-deps');
+  process.exit(1);
 }
 
 // 设置 Husky
