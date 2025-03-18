@@ -5,15 +5,14 @@ const config: ESLintConfig = {
   env: {
     browser: true,
     node: true,
-    es6: true,
+    es2022: true,
   },
   extends: [
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/strict',
     'prettier',
-    'plugin:prettier/recommended',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -22,38 +21,39 @@ const config: ESLintConfig = {
     sourceType: 'module',
     project: ['./tsconfig.json'],
     extraFileExtensions: ['.vue'],
+    vueFeatures: {
+      filter: true,
+      interpolationAsNonHTML: true,
+      styleCSSVariableInjection: true
+    }
   },
   plugins: ['vue', '@typescript-eslint'],
   rules: {
     'vue/multi-word-component-names': 'off',
     'vue/no-v-html': 'warn',
+    'vue/component-api-style': ['error', ['script-setup', 'composition']],
+    'vue/define-macros-order': ['error', {
+      order: ['defineProps', 'defineEmits', 'defineSlots', 'defineOptions', 'defineModel']
+    }],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/component-tags-order': ['error', {
-      order: ['script', 'template', 'style']
-    }],
-    'vue/attributes-order': ['error', {
-      order: [
-        'DEFINITION',
-        'LIST_RENDERING',
-        'CONDITIONALS',
-        'RENDER_MODIFIERS',
-        'GLOBAL',
-        'UNIQUE',
-        'TWO_WAY_BINDING',
-        'OTHER_DIRECTIVES',
-        'OTHER_ATTR',
-        'EVENTS',
-        'CONTENT'
-      ]
-    }],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { 
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_'
+    }],
     '@typescript-eslint/strict-boolean-expressions': 'error',
-    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-floating-promises': 'error'
   },
+  overrides: [
+    {
+      files: ['*.vue'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off'
+      }
+    }
+  ]
 };
 
 export default config;

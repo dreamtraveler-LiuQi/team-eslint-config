@@ -2,6 +2,11 @@
 
 团队统一的代码规范和格式化配置，支持 Vue 3、Nuxt 3 和 WXT 项目。
 
+## 系统要求
+
+- Node.js >= 18.0.0
+- npm >= 9.0.0 或 pnpm >= 8.0.0
+
 ## 特性
 
 - 严格的 TypeScript 类型检查
@@ -32,10 +37,10 @@ npx team-eslint-config wxt
 
 安装完成后，你可以使用以下命令：
 
+- `npm run dev` - 启动开发服务器（包含实时 ESLint 检查）
 - `npm run lint` - 检查代码风格
 - `npm run lint:fix` - 自动修复代码风格问题
 - `npm run format` - 使用 Prettier 格式化代码
-- `npm run type-check` - 检查 TypeScript 类型
 
 ## VS Code 集成
 
@@ -43,7 +48,7 @@ npx team-eslint-config wxt
 
 - ESLint
 - Prettier
-- Volar (Vue Language Features)
+- Vue - Official
 - TypeScript Vue Plugin
 - Error Lens
 - EditorConfig
@@ -97,3 +102,9 @@ npx team-eslint-config wxt
 ## 许可证
 
 MIT
+
+### 注意事项
+
+1. 更新依赖后请运行测试确保功能正常
+2. 如果只想更新小版本，使用 `ncu --target minor`
+3. 如果想交互式选择更新，使用 `ncu --interactive`

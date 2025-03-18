@@ -5,26 +5,38 @@ export enum LogLevel {
   DEBUG = 'debug'
 }
 
+type LogMessage = {
+  level: LogLevel;
+  message: string;
+  error?: Error;
+  timestamp: string;
+};
+
 export class Logger {
   static log(level: LogLevel, message: string, error?: Error): void {
-    const timestamp = new Date().toISOString();
+    const logMessage: LogMessage = {
+      level,
+      message,
+      error,
+      timestamp: new Date().toISOString()
+    };
     
-    switch (level) {
+    switch (logMessage.level) {
       case LogLevel.INFO:
-        console.log(`[${timestamp}] INFO: ${message}`);
+        console.log(`[${logMessage.timestamp}] INFO: ${logMessage.message}`);
         break;
       case LogLevel.WARN:
-        console.warn(`[${timestamp}] WARN: ${message}`);
+        console.warn(`[${logMessage.timestamp}] WARN: ${logMessage.message}`);
         break;
       case LogLevel.ERROR:
-        console.error(`[${timestamp}] ERROR: ${message}`);
-        if (error) {
-          console.error(error);
+        console.error(`[${logMessage.timestamp}] ERROR: ${logMessage.message}`);
+        if (logMessage.error) {
+          console.error(logMessage.error);
         }
         break;
       case LogLevel.DEBUG:
         if (process.env.DEBUG !== undefined) {
-          console.debug(`[${timestamp}] DEBUG: ${message}`);
+          console.debug(`[${logMessage.timestamp}] DEBUG: ${logMessage.message}`);
         }
         break;
     }

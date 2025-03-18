@@ -1,4 +1,4 @@
-import { Linter } from 'eslint';
+import type { Linter } from 'eslint';
 import { Options } from 'prettier';
 
 export type ESLintConfig = Linter.Config;
@@ -38,7 +38,7 @@ export interface PackageJson {
 
 export interface ProjectConfig {
   eslint: ESLintConfig;
-  prettier: PrettierConfig;
+  prettier?: PrettierConfig;
   vscode: {
     settings: VSCodeSettings;
     extensions: VSCodeExtensions;
