@@ -33,9 +33,9 @@ const dependencyVersions = {
 // 配置文件路径
 const configFiles: ConfigFile[] = [
   {
-    source: path.resolve(__dirname, `../../dist/configs/${projectType}.js`),
+    source: path.resolve(__dirname, `../../dist/config/${projectType}.js`),
     target: path.resolve(userProjectRoot, '.eslintrc.cjs'),
-    content: `module.exports = require('team-eslint-config/dist/configs/${projectType}');`
+    content: `module.exports = require('team-eslint-config/dist/config/${projectType}');`
   },
   {
     source: path.resolve(__dirname, '../../dist/prettier.js'),
@@ -86,11 +86,44 @@ const packageJson = require(packageJsonPath) as PackageJson;
 
 // 添加脚本
 packageJson.scripts = packageJson.scripts || {};
-packageJson.scripts.lint = 'eslint --ext .js,.ts,.vue --ignore-path .gitignore .';
-packageJson.scripts['lint:fix'] = 'eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix';
-packageJson.scripts.format = 'prettier --write .';
-packageJson.scripts['type-check'] = 'vue-tsc --noEmit';
-packageJson.scripts.prepare = 'husky install';
+if (projectType === 'nuxt') {
+  packageJson.scripts = {
+    ...packageJson.scripts,
+    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
+    "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
+    "format": "prettier --write .",
+    "type-check": "vue-tsc --noEmit",
+    "prepare": "husky install",
+    // Nuxt 特定的开发脚本
+    "dev": "nuxt dev --eslint",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  };
+
+  // Nuxt 特定的依赖
+  const nuxtDependencies = {
+    ...dependencyVersions,
+    '@nuxtjs/eslint-config-typescript': '^12.1.0',
+    'eslint-plugin-nuxt': '^4.0.0'
+  };
+
+  packageJson.devDependencies = {
+    ...packageJson.devDependencies,
+    ...nuxtDependencies
+  };
+} else {
+  // 其他项目类型的脚本
+  packageJson.scripts = {
+    ...packageJson.scripts,
+    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
+    "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
+    "format": "prettier --write .",
+    "type-check": "vue-tsc --noEmit",
+    "prepare": "husky install"
+  };
+}
 
 // 更新 package.json 中的 lint-staged 配置
 packageJson['lint-staged'] = {
@@ -107,12 +140,6 @@ packageJson['lint-staged'] = {
 if (packageJson.type === 'module') {
   delete packageJson.type;
 }
-
-// 更新依赖版本
-packageJson.devDependencies = {
-  ...packageJson.devDependencies,
-  ...dependencyVersions
-};
 
 // 写入更新后的 package.json
 fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));

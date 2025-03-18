@@ -3,10 +3,10 @@ import { VSCodeSettings } from './types';
 const settings: VSCodeSettings = {
   // ========== Visuals ==========
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.fontFamily": "Input Mono, monospace",
+  // "editor.fontFamily": "Input Mono, monospace",
   "editor.guides.bracketPairs": "active",
   "editor.lineNumbers": "interval",
-  "editor.renderWhitespace": "boundary",
+  // "editor.renderWhitespace": "boundary",
   "window.autoDetectColorScheme": true,
   "workbench.editor.tabActionLocation": "right",
   "workbench.fontAliasing": "antialiased",

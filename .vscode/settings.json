@@ -1,10 +1,10 @@
 {
   // ========== Visuals ==========
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.fontFamily": "Input Mono, monospace",
+  // "editor.fontFamily": "Input Mono, monospace",
   "editor.guides.bracketPairs": "active",
   "editor.lineNumbers": "interval",
-  "editor.renderWhitespace": "boundary",
+  // "editor.renderWhitespace": "boundary",
   "window.autoDetectColorScheme": true,
   "workbench.editor.tabActionLocation": "right",
   "workbench.fontAliasing": "antialiased",
@@ -27,6 +27,7 @@
   "editor.unicodeHighlight.invisibleCharacters": false,
   "editor.stickyScroll.enabled": true,
   "editor.hover.sticky": true,
+  "editor.fontLigatures": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
     "source.fixAll.eslint": "explicit",
