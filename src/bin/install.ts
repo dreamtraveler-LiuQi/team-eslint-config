@@ -19,13 +19,14 @@ const userProjectRoot = process.cwd();
 const configFiles: ConfigFile[] = [
   {
     source: path.resolve(__dirname, `../../dist/configs/${projectType}.js`),
-    target: path.resolve(userProjectRoot, '.eslintrc.js'),
+    target: path.resolve(userProjectRoot, '.eslintrc.cjs'),
     content: `module.exports = require('team-eslint-config/dist/configs/${projectType}');`
   },
   {
     source: path.resolve(__dirname, '../../dist/prettier.js'),
-    target: path.resolve(userProjectRoot, '.prettierrc.js'),
-    content: `module.exports = require('team-eslint-config/dist/prettier');`
+    target: path.resolve(userProjectRoot, '.prettierrc.json'),
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    content: JSON.stringify(require('team-eslint-config/dist/prettier'), null, 2)
   }
 ];
 
@@ -76,19 +77,21 @@ packageJson.scripts.format = 'prettier --write .';
 packageJson.scripts['type-check'] = 'vue-tsc --noEmit';
 packageJson.scripts.prepare = 'husky install'; // 添加 prepare 脚本以自动安装 husky
 
-// 添加 lint-staged 配置
+// 更新 package.json 中的 lint-staged 配置
 packageJson['lint-staged'] = {
   '*.{js,ts,vue}': [
     'eslint --fix',
     'prettier --write'
   ],
-  '*.{css,scss,less}': [
-    'prettier --write'
-  ],
-  '*.{json,md}': [
+  '*.{json,md,css,scss,less}': [
     'prettier --write'
   ]
 };
+
+// 如果存在 type: "module"，移除它
+if (packageJson.type === 'module') {
+  delete packageJson.type;
+}
 
 // 写入更新后的 package.json
 fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));

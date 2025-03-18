@@ -35,3 +35,20 @@ export interface PackageJson {
   'lint-staged'?: Record<string, string[]>;
   [key: string]: unknown;
 }
+
+export interface ProjectConfig {
+  eslint: ESLintConfig;
+  prettier: PrettierConfig;
+  vscode: {
+    settings: VSCodeSettings;
+    extensions: VSCodeExtensions;
+  };
+}
+
+export interface InstallOptions {
+  projectType: ProjectType;
+  typescript?: boolean;
+  prettier?: boolean;
+  vscode?: boolean;
+  git?: boolean;
+}

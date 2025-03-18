@@ -1,4 +1,4 @@
-import { PrettierConfig } from './types';
+import type { PrettierConfig } from './types';
 
 const config: PrettierConfig = {
   semi: true,
@@ -11,4 +11,4 @@ const config: PrettierConfig = {
   vueIndentScriptAndStyle: false
 };
 
-export = config;
+export default config;

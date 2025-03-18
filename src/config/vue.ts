@@ -1,4 +1,4 @@
-import { ESLintConfig } from '../types';
+import type { ESLintConfig } from '../types';
 
 const config: ESLintConfig = {
   root: true,
@@ -20,7 +20,7 @@ const config: ESLintConfig = {
     parser: '@typescript-eslint/parser',
     ecmaVersion: 2022,
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: ['./tsconfig.json'],
     extraFileExtensions: ['.vue'],
   },
   plugins: ['vue', '@typescript-eslint'],
@@ -56,4 +56,4 @@ const config: ESLintConfig = {
   },
 };
 
-export = config;
+export default config;

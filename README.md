@@ -13,17 +13,19 @@
 
 ## 安装
 
+npm install --save-dev team-eslint-config eslint prettier husky @commitlint/cli
+
 ### Vue 项目
 
-npx team-eslint-setup vue
+npx team-eslint-config vue
 
 ### Nuxt 项目
 
-npx team-eslint-setup nuxt
+npx team-eslint-config nuxt
 
 ### WXT 项目
 
-npx team-eslint-setup wxt
+npx team-eslint-config wxt
 
 
 ## 使用
@@ -87,3 +89,11 @@ npx team-eslint-setup wxt
 1. 更新 `package.json` 中的版本号
 2. 运行 `npm run build` 构建项目
 3. 运行 `npm publish` 发布到 NPM
+
+## 贡献
+
+欢迎提交问题和 PR，共同维护团队代码规范。
+
+## 许可证
+
+MIT
